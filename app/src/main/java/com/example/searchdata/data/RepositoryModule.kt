@@ -1,5 +1,6 @@
 package com.example.searchdata.data
 
+import com.example.searchdata.access.Repository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

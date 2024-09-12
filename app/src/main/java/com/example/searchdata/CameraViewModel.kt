@@ -26,4 +26,5 @@ class CameraViewModel: ViewModel() {
     fun updateScannedText(newText: String) {
         _textScanned.value = newText
     }
+
 }
