@@ -4,9 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.searchdata.presentation.viewmodel.util.DrugState
 import com.example.searchdata.data.Repository
-import com.example.searchdata.util.SortType
 import com.example.searchdata.data.Drug
-import com.example.searchdata.data.DrugDao
+import com.example.searchdata.presentation.viewmodel.util.SortType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DataViewModel @Inject constructor(
-    private val repo : Repository, private val dao: DrugDao
+    private val repo : Repository
 ) : ViewModel() {
     /*
   _____               _______
@@ -66,7 +65,7 @@ class DataViewModel @Inject constructor(
         viewModelScope.launch {
             repo.getDrugCount().collect { count ->
                 if (count == 0) {  // Only upsert if the database is empty
-                    predefinedList.forEach { dao.upsertDrug(it) }
+                    predefinedList.forEach { repo.upsertDrug(it) }
                 }
             }
         }
@@ -90,8 +89,8 @@ class DataViewModel @Inject constructor(
 *   function changes based on the given dao either order by name or farm group
 */
         when(sortType){
-            SortType.NAME -> dao.getDrugsOrderedByName()
-            SortType.GROUP -> dao.getDrugsOrderedByFarmGroup()
+            SortType.NAME -> repo.getDrugsOrderedByName()
+            SortType.GROUP -> repo.getDrugsOrderedByFarmGroup()
         }
     }.stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = emptyList())
     val state = combine(_state, _sortType, _drugs){state, sT, d ->

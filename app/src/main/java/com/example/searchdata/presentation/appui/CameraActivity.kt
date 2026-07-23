@@ -42,14 +42,13 @@ import com.example.searchdata.presentation.viewmodel.SearchViewModel
 
 @AndroidEntryPoint
 class CameraActivity: ComponentActivity() {
-
     val cameraViewModel by viewModels<CameraViewModel>()
     private val searchViewModel by viewModels<SearchViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val scannedText by cameraViewModel.textScanned.collectAsState()
+            val scannedText by cameraViewModel.textScanned.collectAsState()\
             val controller = remember {
                 LifecycleCameraController(applicationContext).apply {
                     setEnabledUseCases(CameraController.IMAGE_CAPTURE)

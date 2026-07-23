@@ -21,7 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.searchdata.presentation.viewmodel.SearchViewModel
 import com.example.searchdata.presentation.viewmodel.util.DrugEvent
-import com.example.searchdata.util.SortType
+import com.example.searchdata.presentation.viewmodel.util.SortType
 
 
 @Composable
