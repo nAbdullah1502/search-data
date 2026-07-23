@@ -35,13 +35,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import com.example.searchdata.presentation.gui.CustomModalNavigationDrawer
+import com.example.searchdata.presentation.appui.CustomModalNavigationDrawer
 import com.example.searchdata.presentation.gui.DrugScreen
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.Alignment
 import com.example.searchdata.R
 import com.example.searchdata.util.PermissionHandler
 import com.example.searchdata.presentation.viewmodel.SearchViewModel
+import com.example.searchdata.presentation.appui.CameraActivity
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

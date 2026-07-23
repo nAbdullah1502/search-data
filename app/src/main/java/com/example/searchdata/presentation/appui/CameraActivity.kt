@@ -31,6 +31,11 @@ import com.google.mlkit.vision.common.InputImage
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
@@ -48,13 +53,13 @@ class CameraActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val scannedText by cameraViewModel.textScanned.collectAsState()\
+            val scannedText by cameraViewModel.textScanned.collectAsState()
             val controller = remember {
                 LifecycleCameraController(applicationContext).apply {
                     setEnabledUseCases(CameraController.IMAGE_CAPTURE)
                 }
             }
-            var searchWord = searchViewModel.searchWord
+            val searchWord by searchViewModel.searchQuery.collectAsState()
 
             SearchDataTheme {
                 Column(modifier = Modifier.fillMaxSize()) {
@@ -93,10 +98,10 @@ class CameraActivity: ComponentActivity() {
                             IconButton(onClick = { takePhoto(controller = controller) }){
                                 Icon(imageVector = Icons.Default.Star, contentDescription = "Take photo")
                             }
-                            Button(onClick = { searchViewModel.separateWordsAndFilter(scannedText)}){
+                            Button(onClick = { searchViewModel.separateAndFilter(scannedText)}){
                                 Text("GO! =>")
                             }
-                            Text(searchWord.toString())
+                            Text(searchWord)
                         }
                     }
                 }

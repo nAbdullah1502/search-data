@@ -8,7 +8,7 @@ import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.searchdata.presentation.viewmodel.CameraViewModel
 
 class PermissionHandler {
@@ -29,7 +30,7 @@ class PermissionHandler {
     @Composable
     fun RequirePermission() {
         val context = LocalContext.current as ComponentActivity
-        val cameraViewModel: CameraViewModel by viewModels()
+        val cameraViewModel: CameraViewModel = hiltViewModel()
 
         val permissionResultActivityLauncher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestMultiplePermissions(),
