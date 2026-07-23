@@ -1,4 +1,4 @@
-package com.example.searchdata.access
+package com.example.searchdata.util
 
 import android.Manifest
 import android.content.Intent

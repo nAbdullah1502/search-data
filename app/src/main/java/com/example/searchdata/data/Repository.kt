@@ -3,7 +3,6 @@ package com.example.searchdata.data
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-
 class Repository @Inject constructor(private val drugDao: DrugDao) {
 
     fun getDrugCount(): Flow<Int> {
@@ -18,7 +17,7 @@ class Repository @Inject constructor(private val drugDao: DrugDao) {
     fun searchDrugs(searchQuery: String): Flow<List<Drug>> {
         return drugDao.searchDrugs(searchQuery)
     }
-    fun getDrugsOrderedByFarmGroup(): Flow<List<Drug>>{
+    fun getDrugsOrderedByFarmGroup(): Flow<List<Drug>> {
         return drugDao.getDrugsOrderedByFarmGroup()
     }
 }

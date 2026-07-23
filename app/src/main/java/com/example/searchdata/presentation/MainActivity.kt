@@ -40,7 +40,7 @@ import com.example.searchdata.presentation.gui.DrugScreen
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.Alignment
 import com.example.searchdata.R
-import com.example.searchdata.access.PermissionHandler
+import com.example.searchdata.util.PermissionHandler
 import com.example.searchdata.presentation.viewmodel.SearchViewModel
 
 @AndroidEntryPoint

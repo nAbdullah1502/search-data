@@ -1,4 +1,6 @@
-package com.example.searchdata.access
+package com.example.searchdata.presentation.viewmodel.util
+
+import com.example.searchdata.util.SortType
 
 
 sealed interface DrugEvent {

@@ -2,8 +2,8 @@ package com.example.searchdata.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.searchdata.access.DrugEvent
-import com.example.searchdata.access.Repository
+import com.example.searchdata.presentation.viewmodel.util.DrugEvent
+import com.example.searchdata.data.Repository
 import com.example.searchdata.data.Drug
 import com.example.searchdata.data.DrugDao
 import dagger.hilt.android.lifecycle.HiltViewModel

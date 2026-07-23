@@ -20,8 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.searchdata.presentation.viewmodel.SearchViewModel
-import com.example.searchdata.access.DrugEvent
-import com.example.searchdata.access.SortType
+import com.example.searchdata.presentation.viewmodel.util.DrugEvent
+import com.example.searchdata.util.SortType
 
 
 @Composable

@@ -1,6 +1,7 @@
-package com.example.searchdata.data
+package com.example.searchdata.di
 
-import com.example.searchdata.access.Repository
+import com.example.searchdata.data.Repository
+import com.example.searchdata.data.DrugDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

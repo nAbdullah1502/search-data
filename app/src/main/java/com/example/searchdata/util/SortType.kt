@@ -1,4 +1,4 @@
-package com.example.searchdata.access
+package com.example.searchdata.util
 
 enum class SortType {
     NAME, GROUP

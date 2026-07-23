@@ -1,7 +1,9 @@
-package com.example.searchdata.data
+package com.example.searchdata.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.searchdata.data.DrugDao
+import com.example.searchdata.data.DrugDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

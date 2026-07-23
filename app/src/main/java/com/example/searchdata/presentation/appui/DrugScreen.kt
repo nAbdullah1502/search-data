@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.searchdata.access.DrugState
+import com.example.searchdata.presentation.viewmodel.util.DrugState
 
 @Composable
 fun DrugScreen(state: DrugState, modifier: Modifier = Modifier) {
