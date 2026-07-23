@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.searchdata.presentation.viewmodel.util.DrugEvent
 import com.example.searchdata.data.Repository
 import com.example.searchdata.data.Drug
-import com.example.searchdata.data.DrugDao
+import com.example.searchdata.presentation.viewmodel.util.DrugState
+import com.example.searchdata.presentation.viewmodel.util.SortType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,20 +16,35 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
+import com.example.searchdata.presentation.viewmodel.DataViewModel
+
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val repo : Repository, private val dao: DrugDao
+    private val repo : Repository
 ) : ViewModel() {
+
+    private val _state = MutableStateFlow((DrugState())) //empty state of drugList state
+    private val _sortType = MutableStateFlow(SortType.NAME)
+    val state = combine(_state, _sortType, _drugs){state, sT, d ->
+        state.copy(allDrugs = d, sortType = sT)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = DrugState()
+    )
+
     private val _searchQuery = MutableStateFlow("")
     private val _searching = MutableStateFlow(false)
     private val _showSearchBar = MutableStateFlow(false)
-    private val _searchList = MutableStateFlow(predefinedList)
+    private val _searchList = MutableStateFlow<List<Drug>>(emptyList())
 
     val searchQuery = _searchQuery.asStateFlow()
     val searching = _searching.asStateFlow()
@@ -36,12 +53,12 @@ class SearchViewModel @Inject constructor(
 
 
     @OptIn(FlowPreview::class)
-    val filterDrugs = searchQuery.debounce(500L)
+    val filterDrugs = searchQuery.debounce(500L.milliseconds)
         .onEach { _searching.update {true} }
         .combine(_searchList) { text, drugs ->
             if(text.isBlank()){ drugs }
             else {
-                delay(1000L); drugs.filter { it.matchesQuery(text)}}
+                delay(1000L.milliseconds); drugs.filter { it.matchesQuery(text)}}
         }
         .onEach { _searching.update { false } }
         .stateIn(
@@ -68,6 +85,18 @@ class SearchViewModel @Inject constructor(
         _searchQuery.value = filteredResults
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val _drugs = _sortType.flatMapLatest { sortType->
+/*
+*   flatMapLatest is a function that takes in flows, in this case _sortType flow,
+*   and whenever the action is performed, fe clicked a button to change order,
+*   function changes based on the given dao either order by name or farm group
+*/
+        when(sortType){
+            SortType.NAME -> repo.getDrugsOrderedByName()
+            SortType.GROUP -> repo.getDrugsOrderedByFarmGroup()
+        }
+    }.stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = emptyList())
 
     fun onEvent (event: DrugEvent){
         when(event){
@@ -82,7 +111,7 @@ class SearchViewModel @Inject constructor(
                 if(drugName.isBlank() || farmGroup.isBlank()|| farmEffect.isBlank()){return}
                 val finalDrug =
                     Drug(drugName = drugName, farmGroup = farmGroup, farmEffect = farmEffect)
-                viewModelScope.launch { dao.upsertDrug(finalDrug)}
+                viewModelScope.launch { repo.upsertDrug(finalDrug)}
                 _state.update { it.copy(drugStateName="",stateFarmGroup="",stateFarmEffect="")}
             }
             is DrugEvent.SetSearchQuery -> {

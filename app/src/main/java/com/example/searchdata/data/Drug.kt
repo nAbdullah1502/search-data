@@ -10,14 +10,4 @@ data class Drug (
     val farmEffect: String,
     @PrimaryKey(autoGenerate=true)
     val id: Int = 0
-) {
-//    fun doesMatchSearchQuery(query: String): Boolean {
-//        val matchingCombinations = listOf(
-//            drugName, farmGroup, "${drugName.first()} ${farmGroup.first()}",
-//        )
-//
-//        return matchingCombinations.any {
-//            it.contains(query, ignoreCase = true)
-//        }
-//    }
-}
+)

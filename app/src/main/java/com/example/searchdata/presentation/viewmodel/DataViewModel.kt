@@ -30,7 +30,7 @@ class DataViewModel @Inject constructor(
  |_____/  /_/    \_\    |_|    /_/    \_\
 
     */
-    private val predefinedList = listOf(
+    private val predefinedList : List<Drug> = listOf(
         Drug(drugName = "Furosemide",
             farmGroup = "Diuretic, sulphamoyl derivative",
             farmEffect = "High efficacy diuretic inhibitors of Na+-K+-2Cl--co-transport"),
@@ -79,21 +79,4 @@ class DataViewModel @Inject constructor(
  |_____/ \____/|_|  \_\ |_|
 
     */
-    private val _state = MutableStateFlow((DrugState())) //empty state of drugList state
-    private val _sortType = MutableStateFlow(SortType.NAME)
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private val _drugs = _sortType.flatMapLatest { sortType->
-/*
-*   flatMapLatest is a function that takes in flows, in this case _sortType flow,
-*   and whenever the action is performed, fe clicked a button to change order,
-*   function changes based on the given dao either order by name or farm group
-*/
-        when(sortType){
-            SortType.NAME -> repo.getDrugsOrderedByName()
-            SortType.GROUP -> repo.getDrugsOrderedByFarmGroup()
-        }
-    }.stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = emptyList())
-    val state = combine(_state, _sortType, _drugs){state, sT, d ->
-        state.copy(allDrugs = d, sortType = sT)
-    }.stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = DrugState())
 }
