@@ -19,7 +19,7 @@
         android:theme="@style/Theme.SearchData"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.SearchData">
@@ -30,8 +30,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".gui.FarmGroupActivity"> </activity>
-        <activity android:name=".CameraActivity"> </activity>
+        <activity android:name=".presentation.gui.FarmGroupActivity"> </activity>
+        <activity android:name=".presentation.CameraActivity"> </activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.searchdata.gui
+package com.example.searchdata.presentation.appui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.searchdata.MainViewModel
 import com.example.searchdata.access.DrugState
 
 @Composable

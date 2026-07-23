@@ -1,8 +1,7 @@
-package com.example.searchdata
+package com.example.searchdata.presentation
 
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -36,25 +35,25 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import com.example.searchdata.gui.CustomModalNavigationDrawer
-import com.example.searchdata.gui.DrugScreen
+import com.example.searchdata.presentation.gui.CustomModalNavigationDrawer
+import com.example.searchdata.presentation.gui.DrugScreen
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.platform.LocalContext
+import com.example.searchdata.R
 import com.example.searchdata.access.PermissionHandler
+import com.example.searchdata.presentation.viewmodel.SearchViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val mainViewModel by viewModels<MainViewModel>()
+    private val searchViewModel by viewModels<SearchViewModel>()
     private val permissionHandler = PermissionHandler()
     private val cameraResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             val foundMatches = result.data?.getStringExtra("FOUND_MATCHES")
             foundMatches?.let {
-                mainViewModel.onSearchQueryChange(it) // Update searchQuery with the found matches
+                searchViewModel.onSearchQueryChange(it) // Update searchQuery with the found matches
             }
         }
     }
@@ -69,11 +68,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainViewModel.autoUpsertDrugs()
+        searchViewModel.autoUpsertDrugs()
         enableEdgeToEdge()
         setContent {
             SearchDataTheme {
-                MainScreen(viewModel = mainViewModel, permissionHandler=permissionHandler, onCameraIconClick = {launchCamera()})
+                MainScreen(viewModel = searchViewModel, permissionHandler=permissionHandler, onCameraIconClick = {launchCamera()})
             }
         }
     }
@@ -81,7 +80,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viewModel: MainViewModel, permissionHandler: PermissionHandler, onCameraIconClick: ()-> Unit) {
+fun MainScreen(viewModel: SearchViewModel, permissionHandler: PermissionHandler, onCameraIconClick: ()-> Unit) {
     permissionHandler.RequirePermission()
 
 

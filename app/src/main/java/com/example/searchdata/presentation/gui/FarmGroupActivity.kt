@@ -1,4 +1,4 @@
-package com.example.searchdata.gui
+package com.example.searchdata.presentation.gui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.searchdata.MainViewModel
+import com.example.searchdata.presentation.viewmodel.SearchViewModel
 import com.example.searchdata.ui.theme.SearchDataTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,11 +27,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class FarmGroupActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val mainViewModel by viewModels<MainViewModel>()
+        val searchViewModel by viewModels<SearchViewModel>()
         setContent {
             SearchDataTheme {
                 FarmGroupActivityScreen(
-                    farmGroups = mainViewModel.farmGroups
+                    farmGroups = searchViewModel.farmGroups
                 )
             }
         }

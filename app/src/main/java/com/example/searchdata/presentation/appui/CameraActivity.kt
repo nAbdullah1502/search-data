@@ -1,4 +1,4 @@
-package com.example.searchdata
+package com.example.searchdata.presentation.appui
 
 import android.graphics.Bitmap
 import android.graphics.Matrix
@@ -7,18 +7,17 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.OptIn
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.example.searchdata.presentation.viewmodel.CameraViewModel
 import com.example.searchdata.ui.theme.SearchDataTheme
 import dagger.hilt.android.AndroidEntryPoint
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
@@ -32,24 +31,20 @@ import com.google.mlkit.vision.common.InputImage
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.searchdata.access.DrugState
-import com.example.searchdata.gui.CameraPreview
-import com.example.searchdata.gui.DrugScreen
+import com.example.searchdata.presentation.viewmodel.SearchViewModel
 
 
 @AndroidEntryPoint
 class CameraActivity: ComponentActivity() {
 
     val cameraViewModel by viewModels<CameraViewModel>()
-    private val mainViewModel by viewModels<MainViewModel>()
+    private val searchViewModel by viewModels<SearchViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +55,7 @@ class CameraActivity: ComponentActivity() {
                     setEnabledUseCases(CameraController.IMAGE_CAPTURE)
                 }
             }
+            var searchWord = searchViewModel.searchWord
 
             SearchDataTheme {
                 Column(modifier = Modifier.fillMaxSize()) {
@@ -98,12 +94,10 @@ class CameraActivity: ComponentActivity() {
                             IconButton(onClick = { takePhoto(controller = controller) }){
                                 Icon(imageVector = Icons.Default.Star, contentDescription = "Take photo")
                             }
-                            Button(onClick = {
-                                mainViewModel.separateAndFilter(scannedText)
-                            }){
+                            Button(onClick = { searchViewModel.separateWordsAndFilter(scannedText)}){
                                 Text("GO! =>")
                             }
-                            DisplaySearchQuery(mainViewModel = mainViewModel)
+                            Text(searchWord.toString())
                         }
                     }
                 }
@@ -114,7 +108,7 @@ class CameraActivity: ComponentActivity() {
         controller.takePicture(
             ContextCompat.getMainExecutor(applicationContext),
             object : ImageCapture.OnImageCapturedCallback() {
-                @androidx.annotation.OptIn(ExperimentalGetImage::class)
+                @OptIn(ExperimentalGetImage::class)
                 override fun onCaptureSuccess(image: ImageProxy) {
                     super.onCaptureSuccess(image)
                     val mediaImage = image.image //image.toImage() #java
@@ -138,10 +132,4 @@ class CameraActivity: ComponentActivity() {
             }
         )
     }
-}
-
-@Composable
-fun DisplaySearchQuery(mainViewModel: MainViewModel) {
-    val searchQuery by mainViewModel.searchQuery.collectAsState()
-    Text(text = searchQuery)
 }

@@ -1,4 +1,4 @@
-package com.example.searchdata.appui
+package com.example.searchdata.presentation.gui
 
 import androidx.compose.runtime.Composable
 import androidx.camera.view.LifecycleCameraController

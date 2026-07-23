@@ -1,4 +1,4 @@
-package com.example.searchdata.appui
+package com.example.searchdata.presentation.gui
 
 
 import android.content.Intent
@@ -19,7 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.searchdata.MainViewModel
+import com.example.searchdata.presentation.viewmodel.SearchViewModel
 import com.example.searchdata.access.DrugEvent
 import com.example.searchdata.access.SortType
 
@@ -27,7 +27,7 @@ import com.example.searchdata.access.SortType
 @Composable
 fun CustomModalNavigationDrawer(
     drawerState: DrawerState,
-    viewModel: MainViewModel,
+    viewModel: SearchViewModel,
     content: @Composable (PaddingValues) -> Unit
 ) {
     val context = LocalContext.current

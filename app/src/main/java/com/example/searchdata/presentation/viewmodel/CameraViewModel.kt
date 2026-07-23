@@ -1,5 +1,4 @@
-package com.example.searchdata
-
+package com.example.searchdata.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.google.mlkit.vision.text.TextRecognition
